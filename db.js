@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 function log(message, level = 'info') {
   const timestamp = new Date().toISOString();
   const formattedMessage = `[${timestamp}] [DB] [${level.toUpperCase()}] ${message}`;
-  
+
   switch(level) {
     case 'error':
       console.error(formattedMessage);
@@ -28,72 +28,229 @@ const APP_START_TIME = Date.now();
 // Начальные значения для кода (не меняем, просто оптимизируем доступ)
 const INITIAL_HTML = `<!DOCTYPE html>
 <html lang="ru">
-<head>     
-  <meta charset="UTF-8">     
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">     
-  <link rel="stylesheet" href="style.css">   
-  <title>Изображения</title>
- </head>
- <body>     
-  <div class="gallery">  
-   <!-- Рабоча зона команды 1-->                
-   <img class="img1" src="" alt="Изображение 1">          
-    
-   <!-- Рабоча зона команды 2-->              
-   <img class="img2" src="" alt="Изображение 2">         
-    
-   <!-- Рабоча зона команды 3-->            
-    <img class="img3" src="" alt="Изображение 3">            
-     
-   <!-- Рабоча зона команды 4-->            
-    <img class="img4" src="" alt="Изображение 4">    
-   
-   </div> 
-   </body> 
-  </html>`;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>БерПолитех 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="background-container">
+    <img src="img/SQcgNc7u2eg.jpg" alt="Здание" class="background-image">
 
-const INITIAL_CSS = `body {     
- display: flex;    
- justify-content: center;     
- align-items: center;     
- height: 100vh;     
- margin: 0;     
- background-color: #f0f0f0; 
-}  
+    <div class="content-wrapper">
+      <div class="gallery">
+        <!-- Верхний ряд партнёров -->
+        <div class="partners-row top">
+          <div class="gallery-item partner">
+            <img src="img/Eurochem-Russia-icon.png" alt="Еврохим">
+          </div>
+          <div class="gallery-item partner">
+            <img src="img/Logo_new_RU.png" alt="Уралхим">
+          </div>
+        </div>
 
-.gallery {    
- display: grid;     
- grid-template-columns: repeat(2, 1fr);     /* 2 колонки */     
- gap: 0px;     /* Расстояние между изображениями */ 
-}  
+        <!-- Средний ряд с логотипами -->
+        <div class="middle-row">
+          <div class="gallery-item medium">
+            <img src="img/БПТ.png" alt="БПТ">
+          </div>
+          <div class="gallery-item medium">
+            <img src="img/80ЛЕТПОБЕДЫ.png" alt="80 лет победы">
+          </div>
+          <div class="gallery-item medium">
+            <img src="img/85СПО.png" alt="85 лет СПО">
+          </div>
+          <div class="gallery-item medium">
+            <img src="img/ПРОФЕССИОНАЛИТЕТ.png" alt="Профессионалитет">
+          </div>
+        </div>
 
-.gallery img {     
- width: 100%;     /* Ширина изображения 100% от ячейки */     
- height: auto;     /* Автоматическая высота для сохранения пропорций */ 
-} 
+        <!-- Нижний ряд партнёров -->
+        <div class="partners-row bottom">
+          <div class="gallery-item partner">
+            <img src="img/id1w5SyckL_1745361871508.png" alt="Азот">
+          </div>
+          <div class="gallery-item partner">
+            <img src="img/vkk_rus2020.jpg" alt="ВКК">
+          </div>
+        </div>
+      </div>
 
-/*Рабоча зона команды 1*/
-.img1 {    
- max-width: 100%;     /* Адаптивная ширина */    
- height: auto;     /* Автоматическая высота для сохранения пропорций */ 
-}  
+      <div class="title-bottom">
+        <h1>БЕРПОЛИТЕХ-2025</h1>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
 
-/*Рабоча зона команды 2*/
-.img2 {    
- max-width: 100%;     /* Адаптивная ширина */    
- height: auto;     /* Автоматическая высота для сохранения пропорций */ 
-}  
+const INITIAL_CSS = `body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+}
 
-/*Рабоча зона команды 3*/
-.img3 {    
- max-width: 100%;     /* Адаптивная ширина */    
- height: auto;     /* Автоматическая высота для сохранения пропорций */ 
-}  
+.background-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
 
-/*Рабоча зона команды 4*/
-.img4 {    
- max-width: 100%;     /* Адаптивная ширина */    
- height: auto;     /* Автоматическая высота для сохранения пропорций */ 
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.7);
+}
+
+.content-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 20px;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.partners-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.middle-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+}
+
+.gallery-item {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.partner {
+  width: 400px;
+  height: 250px;
+}
+
+.medium {
+  width: 220px;
+  height: 150px;
+}
+
+.title-bottom {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.title-bottom h1 {
+  color: #0066cc;
+  font-size: 3.1rem;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #fff,
+    0 0 20px #fff,
+    2px 2px 2px rgba(0, 0, 0, 0.5);
+  -webkit-text-stroke: 1px white;
+  font-weight: 800;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+  .partner {
+    width: 350px;
+    height: 220px;
+  }
+
+  .medium {
+    width: 180px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    gap: 30px;
+  }
+
+  .partner {
+    width: 300px;
+    height: 190px;
+  }
+
+  .middle-row {
+    flex-wrap: wrap;
+  }
+
+  .medium {
+    width: 160px;
+    height: 110px;
+  }
+
+  .title-bottom h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .partners-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .partner {
+    width: 280px;
+    height: 180px;
+  }
+
+  .medium {
+    width: 140px;
+    height: 95px;
+  }
+
+  .title-bottom h1 {
+    font-size: 2rem;
+  }
 }`;
 
 // Подготовленные запросы для оптимизации
@@ -112,7 +269,7 @@ function initDB() {
 
   // База данных будет в папке data
   const dbPath = path.join(dataDir, 'code.db');
-  
+
   // Оптимизируем настройки базы данных
   const db = new Database(dbPath, {
     // Режим журналирования WAL для лучшей производительности
@@ -144,10 +301,10 @@ function initDB() {
       created_at INTEGER NOT NULL
     )
   `);
-  
+
   // Создаем индекс для ускорения поиска по истории
   db.exec(`
-    CREATE INDEX IF NOT EXISTS idx_code_history_type 
+    CREATE INDEX IF NOT EXISTS idx_code_history_type
     ON code_history(type, created_at DESC)
   `);
 
@@ -167,7 +324,7 @@ function initDB() {
       2, 'css', INITIAL_CSS, APP_START_TIME
     );
   }
-  
+
   // Подготавливаем запросы для оптимизации
   selectHtmlStmt = db.prepare("SELECT content FROM code_data WHERE type = 'html'");
   selectCssStmt = db.prepare("SELECT content FROM code_data WHERE type = 'css'");
@@ -197,11 +354,11 @@ export function getCodeData() {
         css: INITIAL_CSS
       };
     }
-    
+
     // Используем подготовленные запросы для получения данных
     const htmlResult = selectHtmlStmt.get();
     const cssResult = selectCssStmt.get();
-    
+
     const htmlContent = htmlResult?.content || INITIAL_HTML;
     const cssContent = cssResult?.content || INITIAL_CSS;
 
@@ -234,27 +391,27 @@ export function updateCode(type, content, userName) {
 function processUpdateQueue() {
   // Если уже обрабатываем или очередь пуста - выходим
   if (isUpdating || updateQueue.length === 0) return;
-  
+
   isUpdating = true;
-  
+
   // Получаем следующую задачу из очереди
   const { type, content, userName, resolve, reject } = updateQueue.shift();
-  
+
   try {
     const timestamp = Date.now();
-    
+
     // Начинаем транзакцию для атомарности операции
     const transaction = db.transaction(() => {
       // Обновляем текущее состояние кода
       updateCodeStmt.run(content, timestamp, type);
-      
+
       // Добавляем запись в историю изменений
       insertHistoryStmt.run(type, content, userName, timestamp);
     });
-    
+
     // Выполняем транзакцию
     transaction();
-    
+
     // Задача выполнена успешно
     resolve(true);
   } catch (error) {
@@ -263,7 +420,7 @@ function processUpdateQueue() {
   } finally {
     // Снимаем флаг и продолжаем обработку очереди
     isUpdating = false;
-    
+
     // Если есть ещё задачи, продолжаем их обработку
     if (updateQueue.length > 0) {
       processUpdateQueue();
@@ -274,21 +431,21 @@ function processUpdateQueue() {
 export function resetToInitialState() {
   try {
     const timestamp = Date.now();
-    
+
     // Используем транзакцию для атомарности
     const transaction = db.transaction(() => {
       // Сбрасываем HTML и CSS к начальным значениям
       updateCodeStmt.run(INITIAL_HTML, timestamp, 'html');
       updateCodeStmt.run(INITIAL_CSS, timestamp, 'css');
-      
+
       // Добавляем запись в историю об этом сбросе
       insertHistoryStmt.run('html', INITIAL_HTML, 'admin_reset', timestamp);
       insertHistoryStmt.run('css', INITIAL_CSS, 'admin_reset', timestamp);
     });
-    
+
     // Выполняем транзакцию
     transaction();
-    
+
     log('Данные успешно сброшены к начальному состоянию');
     return true;
   } catch (error) {
@@ -301,11 +458,11 @@ export function getCodeHistory(limit = 10) {
   try {
     // Подготавливаем запрос для получения истории
     const stmt = db.prepare(`
-      SELECT * FROM code_history 
-      ORDER BY created_at DESC 
+      SELECT * FROM code_history
+      ORDER BY created_at DESC
       LIMIT ?
     `);
-    
+
     return stmt.all(limit);
   } catch (error) {
     log(`Ошибка при получении истории изменений: ${error.message}`, 'error');
@@ -318,4 +475,4 @@ export default {
   updateCode,
   resetToInitialState,
   getCodeHistory
-}; 
+};
