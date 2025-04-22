@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ панель</title>
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +17,7 @@
             margin: 0;
             background-color: #f5f5f5;
         }
-        
+
         .admin-container {
             background-color: white;
             padding: 2rem;
@@ -25,18 +27,18 @@
             max-width: 600px;
             width: 100%;
         }
-        
+
         h1 {
             color: #333;
             margin-bottom: 1.5rem;
         }
-        
+
         .warning {
             color: #e74c3c;
             font-weight: bold;
             margin-bottom: 1.5rem;
         }
-        
+
         .reset-button {
             background-color: #e74c3c;
             color: white;
@@ -47,68 +49,172 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-        
+
         .reset-button:hover {
             background-color: #c0392b;
         }
-        
+
         .reset-button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-        
+
         .result-message {
             margin-top: 1.5rem;
             padding: 10px;
             border-radius: 4px;
             display: none;
         }
-        
+
         .success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-        
+
         .error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        
+
         .back-link {
             margin-top: 1.5rem;
             color: #3498db;
             text-decoration: none;
         }
-        
+
         .back-link:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
+    <!-- Ссылка для пропуска навигации -->
+    <a href="#admin-content" class="skip-link">Перейти к основному содержимому</a>
+    <!-- SVG фильтры для режимов дальтонизма -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+        <defs>
+            <!-- Протанопия (не видит красный) -->
+            <filter id="protanopia-filter">
+                <feColorMatrix
+                    type="matrix"
+                    values="0.367, 0.633, 0, 0, 0,
+                            0.367, 0.633, 0, 0, 0,
+                            0, 0.167, 0.833, 0, 0,
+                            0, 0, 0, 1, 0" />
+                <feComponentTransfer>
+                    <feFuncR type="gamma" exponent="0.9" amplitude="1" offset="0"/>
+                    <feFuncG type="gamma" exponent="0.9" amplitude="1" offset="0"/>
+                    <feFuncB type="gamma" exponent="0.9" amplitude="1" offset="0"/>
+                </feComponentTransfer>
+            </filter>
+            <!-- Дейтеранопия (не видит зеленый) -->
+            <filter id="deuteranopia-filter">
+                <feColorMatrix
+                    type="matrix"
+                    values="0.625, 0.375, 0, 0, 0,
+                            0.7, 0.3, 0, 0, 0,
+                            0, 0.3, 0.7, 0, 0,
+                            0, 0, 0, 1, 0" />
+                <feColorMatrix
+                    type="saturate"
+                    values="0.5" />
+                <feComponentTransfer>
+                    <feFuncR type="gamma" exponent="1.2" amplitude="1" offset="0"/>
+                    <feFuncG type="gamma" exponent="0.9" amplitude="1" offset="0"/>
+                    <feFuncB type="gamma" exponent="1" amplitude="1" offset="0"/>
+                </feComponentTransfer>
+            </filter>
+            <!-- Тританопия (не видит синий) -->
+            <filter id="tritanopia-filter">
+                <feColorMatrix
+                    type="matrix"
+                    values="1, 0, 0, 0, 0,
+                            0, 0.7, 0.3, 0, 0,
+                            0, 0.7, 0.3, 0, 0,
+                            0, 0, 0, 1, 0" />
+                <feColorMatrix
+                    type="saturate"
+                    values="0.8" />
+                <feComponentTransfer>
+                    <feFuncR type="gamma" exponent="1" amplitude="1" offset="0"/>
+                    <feFuncG type="gamma" exponent="1" amplitude="1" offset="0"/>
+                    <feFuncB type="gamma" exponent="0.9" amplitude="1" offset="0"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Кнопка доступности -->
+    <button id="accessibility-btn" class="accessibility-btn" aria-label="Настройки доступности" aria-expanded="false" aria-controls="accessibility-panel">
+        <i class="fas fa-universal-access"></i>
+    </button>
+
+    <!-- Панель доступности -->
+    <div id="accessibility-panel" class="accessibility-panel" aria-labelledby="accessibility-heading" role="dialog">
+        <h3 id="accessibility-heading">Настройки доступности</h3>
+
+        <div class="accessibility-section">
+            <h4>Размер шрифта</h4>
+            <div class="accessibility-btn-group">
+                <button id="font-normal" class="font-size-btn active" aria-pressed="true">Обычный</button>
+                <button id="font-large" class="font-size-btn" aria-pressed="false">Большой</button>
+                <button id="font-xlarge" class="font-size-btn" aria-pressed="false">Очень большой</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>Контрастность</h4>
+            <div class="accessibility-btn-group">
+                <button id="contrast-normal" class="contrast-btn active" aria-pressed="true">Обычная</button>
+                <button id="contrast-high" class="contrast-btn" aria-pressed="false">Высокая</button>
+            </div>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>Режим для дальтонизма</h4>
+            <select id="colorblind-mode" class="accessibility-select" aria-label="Выберите режим для дальтонизма">
+                <option value="normal">Обычный режим</option>
+                <option value="protanopia">Протанопия (не видит красный)</option>
+                <option value="deuteranopia">Дейтеранопия (не видит зеленый)</option>
+                <option value="tritanopia">Тританопия (не видит синий)</option>
+            </select>
+        </div>
+
+        <div class="accessibility-section">
+            <h4>Анимации</h4>
+            <div class="accessibility-toggle">
+                <input type="checkbox" id="animations-toggle" checked aria-label="Включить или отключить анимации">
+                <label for="animations-toggle">Включить анимации</label>
+            </div>
+        </div>
+
+        <button id="accessibility-reset" class="accessibility-reset">Сбросить настройки</button>
+    </div>
+
+    <div id="admin-content" class="admin-container" role="main" aria-label="Административная панель">
         <h1>Админ панель</h1>
-        
+
         <p class="warning">Внимание! Сброс данных приведет к восстановлению начальных значений HTML и CSS.</p>
-        
+
         <button id="resetButton" class="reset-button">Сбросить данные</button>
-        
+
         <div id="resultMessage" class="result-message"></div>
-        
+
         <a href="/" class="back-link">Вернуться на главную</a>
     </div>
-    
-    <script>
+
+    <script type="module">
+        import { AccessibilityManager } from './js/accessibility.js';
         document.getElementById('resetButton').addEventListener('click', async function() {
             const button = this;
             const resultMessage = document.getElementById('resultMessage');
-            
+
             // Блокируем кнопку во время запроса
             button.disabled = true;
             button.textContent = 'Выполняется сброс...';
-            
+
             try {
                 const response = await fetch('/api/reset', {
                     method: 'POST',
@@ -116,15 +222,15 @@
                         'Content-Type': 'application/json'
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 resultMessage.style.display = 'block';
-                
+
                 if (data.success) {
                     resultMessage.className = 'result-message success';
                     resultMessage.textContent = data.message;
-                    
+
                     // Разблокируем кнопку через 3 секунды
                     setTimeout(() => {
                         button.disabled = false;
@@ -133,7 +239,7 @@
                 } else {
                     resultMessage.className = 'result-message error';
                     resultMessage.textContent = data.message || 'Произошла ошибка при сбросе данных';
-                    
+
                     // Разблокируем кнопку
                     button.disabled = false;
                     button.textContent = 'Сбросить данные';
@@ -142,12 +248,17 @@
                 resultMessage.style.display = 'block';
                 resultMessage.className = 'result-message error';
                 resultMessage.textContent = 'Ошибка соединения с сервером';
-                
+
                 // Разблокируем кнопку
                 button.disabled = false;
                 button.textContent = 'Сбросить данные';
             }
         });
+
+        // Инициализация менеджера доступности
+        document.addEventListener('DOMContentLoaded', () => {
+            const accessibilityManager = new AccessibilityManager();
+        });
     </script>
 </body>
-</html> 
+</html>

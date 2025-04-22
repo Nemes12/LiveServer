@@ -19,6 +19,10 @@
     --font-size-base: 16px;
     --font-size-small: 14px;
     --font-size-large: 18px;
+
+    /* Переменные для доступности */
+    --font-size-factor: 1;
+    --contrast-factor: 1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -427,6 +431,181 @@ label {
     justify-content: center;
     align-items: center;
     z-index: 11000;
+}
+
+/* Стили для кнопки и панели доступности */
+.accessibility-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--button-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.accessibility-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.accessibility-btn:focus {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+}
+
+.accessibility-panel {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #2d2d2d;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    z-index: 9998;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.accessibility-panel.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.accessibility-panel h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.accessibility-section {
+    margin-bottom: 20px;
+}
+
+.accessibility-section h4 {
+    color: #ccc;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.accessibility-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.accessibility-btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+.accessibility-btn-group button {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px !important;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.accessibility-btn-group button:hover {
+    background: #555;
+}
+
+.accessibility-btn-group button.active {
+    background: var(--button-color);
+}
+
+.accessibility-select {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.accessibility-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.accessibility-toggle label {
+    background: transparent;
+    padding: 0;
+    height: auto;
+}
+
+.accessibility-toggle input[type="checkbox"] {
+    width: 40px;
+    height: 20px;
+    appearance: none;
+    background: #444;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.accessibility-toggle input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.accessibility-toggle input[type="checkbox"]:checked {
+    background: var(--button-color);
+}
+
+.accessibility-toggle input[type="checkbox"]:checked::before {
+    left: 22px;
+}
+
+.accessibility-reset {
+    width: 100% !important;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px !important;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+    font-size: 14px !important;
+    height: auto !important;
+}
+
+.accessibility-reset:hover {
+    background: #c0392b;
 }
 
 .login-content {
@@ -1132,4 +1311,248 @@ label {
   right: 0;
   height: 2px;
   background-color: rgba(255, 165, 0, 0.4);
+}
+
+/* Стили для режимов доступности */
+
+/* Размер шрифта */
+html.font-size-normal {
+    --font-size-factor: 1;
+}
+
+html.font-size-large {
+    --font-size-factor: 1.25;
+}
+
+html.font-size-xlarge {
+    --font-size-factor: 1.5;
+}
+
+/* Применяем размер шрифта */
+html.font-size-large {
+    font-size: calc(var(--font-size-base) * 1.25);
+}
+
+html.font-size-xlarge {
+    font-size: calc(var(--font-size-base) * 1.5);
+}
+
+/* Применяем размер шрифта к всем элементам, кроме панели доступности */
+html.font-size-large *, html.font-size-xlarge * {
+    font-size: inherit;
+}
+
+/* Фиксированный размер шрифта для панели доступности */
+.accessibility-panel,
+.accessibility-panel *,
+.accessibility-btn {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+}
+
+/* Фиксированные размеры элементов панели доступности */
+.accessibility-panel h3 {
+    font-size: 18px !important;
+    margin-bottom: 15px !important;
+}
+
+.accessibility-panel h4 {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+}
+
+.accessibility-btn-group button {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+}
+
+.accessibility-select {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+}
+
+.accessibility-toggle label {
+    font-size: 14px !important;
+}
+
+.accessibility-reset {
+    font-size: 14px !important;
+    padding: 10px !important;
+}
+
+/* Исключаем панель доступности из наследования размера шрифта */
+html.font-size-large .accessibility-panel,
+html.font-size-large .accessibility-btn,
+html.font-size-xlarge .accessibility-panel,
+html.font-size-xlarge .accessibility-btn {
+    transform: none !important;
+}
+
+/* Фиксированные размеры для панели доступности */
+.accessibility-panel {
+    width: 300px !important;
+    padding: 20px !important;
+}
+
+.accessibility-btn {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+/* Увеличиваем размер кнопок и инпутов (кроме панели доступности) */
+html.font-size-large button:not(.accessibility-panel *):not(.accessibility-btn),
+html.font-size-large input:not(.accessibility-panel *),
+html.font-size-large select:not(.accessibility-panel *),
+html.font-size-large textarea:not(.accessibility-panel *),
+html.font-size-large .login-btn:not(.accessibility-panel *),
+html.font-size-large .reset-button:not(.accessibility-panel *) {
+    font-size: calc(var(--font-size-base) * 1.25);
+    padding: 0.8em 1.2em;
+}
+
+html.font-size-xlarge button:not(.accessibility-panel *):not(.accessibility-btn),
+html.font-size-xlarge input:not(.accessibility-panel *),
+html.font-size-xlarge select:not(.accessibility-panel *),
+html.font-size-xlarge textarea:not(.accessibility-panel *),
+html.font-size-xlarge .login-btn:not(.accessibility-panel *),
+html.font-size-xlarge .reset-button:not(.accessibility-panel *) {
+    font-size: calc(var(--font-size-base) * 1.5);
+    padding: 0.9em 1.3em;
+}
+
+/* Высокая контрастность */
+html.contrast-high {
+    filter: contrast(1.4);
+}
+
+html.contrast-high body {
+    background: #000;
+    color: #fff;
+}
+
+html.contrast-high .editor-header,
+html.contrast-high .div-codemirror,
+html.contrast-high label {
+    background: #000;
+    color: #fff;
+    border-color: #fff;
+}
+
+html.contrast-high .accessibility-btn-group button,
+html.contrast-high .accessibility-select,
+html.contrast-high .accessibility-toggle input[type="checkbox"] {
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+html.contrast-high .accessibility-btn-group button.active {
+    background: #fff;
+    color: #000;
+}
+
+/* Режимы дальтонизма */
+html.colorblind-protanopia {
+    filter: url('#protanopia-filter');
+}
+
+html.colorblind-deuteranopia {
+    filter: url('#deuteranopia-filter');
+}
+
+html.colorblind-tritanopia {
+    filter: url('#tritanopia-filter');
+}
+
+/* Уменьшение анимаций */
+html.reduce-animations * {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+}
+
+/* Дополнительные улучшения доступности */
+:focus {
+    outline: 3px solid var(--button-color);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid var(--button-color);
+    outline-offset: 2px;
+}
+
+/* Улучшения для кнопок и ссылок */
+button, a, .login-btn, .reset-button, .back-link {
+    transition: all 0.2s ease;
+}
+
+button:hover, a:hover, .login-btn:hover, .reset-button:hover, .back-link:hover {
+    transform: scale(1.05);
+}
+
+button:active, a:active, .login-btn:active, .reset-button:active, .back-link:active {
+    transform: scale(0.98);
+}
+
+/* Улучшения для клавиатурной навигации */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--button-color);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Улучшения для режима высокой контрастности */
+html.contrast-high button,
+html.contrast-high .login-btn,
+html.contrast-high .reset-button,
+html.contrast-high .back-link {
+    border: 2px solid #fff;
+    text-shadow: none;
+}
+
+html.contrast-high .accessibility-btn {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+}
+
+/* Дополнительные улучшения для режима высокой контрастности */
+html.contrast-high .editor-header {
+    border-bottom: 2px solid #fff;
+}
+
+html.contrast-high .div-codemirror {
+    border: 2px solid #fff;
+}
+
+html.contrast-high .accessibility-panel {
+    border: 2px solid #fff;
+    background: #000;
+}
+
+html.contrast-high .accessibility-section h4 {
+    color: #fff;
+}
+
+html.contrast-high .accessibility-btn-group button {
+    border: 2px solid #fff;
+}
+
+html.contrast-high .accessibility-btn-group button.active {
+    background: #fff;
+    color: #000;
+    font-weight: bold;
 }

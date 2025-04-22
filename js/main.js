@@ -1,4 +1,5 @@
 import { appInitializer } from './app-initializer.js';
+import { AccessibilityManager } from './accessibility.js';
 
 // main.js
 // Основной файл для инициализации приложения
@@ -33,6 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             window.dispatchEvent(new Event('monaco_loaded'));
         });
     }
+
+    // Инициализация менеджера доступности
+    window.accessibilityManager = new AccessibilityManager();
 
     console.log('Приложение инициализировано');
 });
