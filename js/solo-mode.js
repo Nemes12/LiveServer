@@ -1,6 +1,8 @@
 // solo-mode.js
 // Модуль для управления одиночным режимом редактирования кода
 
+import { ChatbaseAIAssistant } from './chatbase-ai-assistant.js';
+
 /**
  * Класс для управления одиночным режимом редактирования
  */
@@ -17,6 +19,7 @@ export class SoloModeManager {
         this.cssEditor = null;
         this.autoSaveInterval = null;
         this.autoSaveDelay = 5000; // 5 секунд
+        this.chatbaseAI = null; // Чат с ИИ на основе Chatbase
     }
 
     /**
@@ -46,7 +49,31 @@ export class SoloModeManager {
         // Обновляем заголовки редакторов
         this.updateEditorHeaders();
 
+        // Инициализируем чат с ИИ на основе Chatbase
+        this.initializeChatbaseAI();
+
         console.log(`Одиночный режим инициализирован для пользователя: ${userName}`);
+    }
+
+    /**
+     * Инициализация чата с ИИ на основе Chatbase
+     */
+    async initializeChatbaseAI() {
+        // Создаем контейнер для чата с ИИ
+        const chatContainer = document.createElement('div');
+        chatContainer.className = 'solo-mode-chat-container';
+
+        // Находим подходящее место для размещения
+        const rightPanel = document.querySelector('.right');
+        if (rightPanel) {
+            rightPanel.appendChild(chatContainer);
+        }
+
+        // Создаем и инициализируем чат с ИИ
+        this.chatbaseAI = new ChatbaseAIAssistant();
+        await this.chatbaseAI.initialize(chatContainer);
+
+        console.log('Чат с ИИ на основе Chatbase успешно инициализирован');
     }
 
     /**
@@ -206,6 +233,18 @@ export class SoloModeManager {
         if (this.autoSaveInterval) {
             clearInterval(this.autoSaveInterval);
             this.autoSaveInterval = null;
+        }
+
+        // Деактивируем чат с ИИ, если он существует
+        if (this.chatbaseAI) {
+            this.chatbaseAI.deactivate();
+            this.chatbaseAI = null;
+        }
+
+        // Удаляем контейнер чата с ИИ, если он существует
+        const chatContainer = document.querySelector('.solo-mode-chat-container');
+        if (chatContainer) {
+            chatContainer.remove();
         }
 
         this.isActive = false;
