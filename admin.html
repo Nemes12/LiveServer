@@ -7,6 +7,37 @@
     <!-- Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Стили для кнопки выхода */
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 9000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logout-btn i {
+            font-size: 16px;
+        }
+
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -146,6 +177,11 @@
         </defs>
     </svg>
 
+    <!-- Кнопка выхода -->
+    <button id="logout-btn" class="logout-btn" aria-label="Выход">
+        <i class="fas fa-sign-out-alt"></i> Выход
+    </button>
+
     <!-- Кнопка доступности -->
     <button id="accessibility-btn" class="accessibility-btn" aria-label="Настройки доступности" aria-expanded="false" aria-controls="accessibility-panel">
         <i class="fas fa-universal-access"></i>
@@ -258,6 +294,17 @@
         // Инициализация менеджера доступности
         document.addEventListener('DOMContentLoaded', () => {
             const accessibilityManager = new AccessibilityManager();
+
+            // Обработчик для кнопки выхода
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                // Очищаем данные режима из localStorage
+                localStorage.removeItem('workMode');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('teamName');
+
+                // Перенаправляем на главную страницу без запроса на перезагрузку
+                window.location.replace('/');
+            });
         });
     </script>
 </body>

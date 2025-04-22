@@ -16,11 +16,11 @@ export class CursorManager {
         this.cursors = {};
         this.initialized = false;
         this.cursorContainer = null;
-        
+
         // Инициализация курсоров
         this._initialize();
     }
-    
+
     /**
      * Инициализация менеджера курсоров
      * @private
@@ -37,7 +37,7 @@ export class CursorManager {
             console.error('Ошибка при инициализации менеджера курсоров:', error);
         }
     }
-    
+
     /**
      * Инициализация курсоров после загрузки DOM
      * @private
@@ -46,22 +46,22 @@ export class CursorManager {
         try {
             // Создаем контейнер для курсоров
             this._createCursorContainer();
-            
+
             // Подписываемся на события сокета
             this._subscribeToSocketEvents();
-            
+
             // Подписываемся на события мыши
             this._setupMouseEvents();
-            
+
             // Устанавливаем флаг инициализации
             this.initialized = true;
-            
+
             console.log('Менеджер курсоров успешно инициализирован');
         } catch (error) {
             console.error('Ошибка при инициализации курсоров:', error);
         }
     }
-    
+
     /**
      * Создание контейнера для курсоров
      * @private
@@ -69,7 +69,7 @@ export class CursorManager {
     _createCursorContainer() {
         // Проверяем, существует ли уже контейнер
         let cursorContainer = document.getElementById('cursor-container');
-        
+
         if (!cursorContainer) {
             cursorContainer = document.createElement('div');
             cursorContainer.id = 'cursor-container';
@@ -82,10 +82,10 @@ export class CursorManager {
             cursorContainer.style.zIndex = '9999';
             document.body.appendChild(cursorContainer);
         }
-        
+
         this.cursorContainer = cursorContainer;
     }
-    
+
     /**
      * Подписка на события сокета
      * @private
@@ -94,23 +94,23 @@ export class CursorManager {
         // Обрабатываем движения курсора других пользователей
         this.socketService.onCursorMoved((data) => {
             const { x, y, teamName } = data;
-            
+
             // Не обрабатываем собственные движения курсора
             if (teamName === this.socketService.getTeamName()) return;
-            
+
             // Обновляем или создаем курсор
             this.updateCursor(teamName, x, y);
         });
-        
+
         // Обрабатываем отключение пользователя
         this.socketService.onUserDisconnected((data) => {
             const { teamName } = data;
-            
+
             // Удаляем курсор отключившегося пользователя
             this.removeCursor(teamName);
         });
     }
-    
+
     /**
      * Настройка обработчиков событий мыши
      * @private
@@ -119,15 +119,15 @@ export class CursorManager {
         // Обрабатываем движение мыши
         document.addEventListener('mousemove', this._throttle((e) => {
             if (!this.socketService.isAuthorized()) return;
-            
+
             // Отправляем позицию курсора через сокет
             this.socketService.updateCursorPosition({
-                x: e.clientX, 
+                x: e.clientX,
                 y: e.clientY
             });
         }, 50)); // Ограничиваем до 20 обновлений в секунду (50мс)
     }
-    
+
     /**
      * Обновление курсора
      * @param {string} teamName - Имя команды
@@ -137,17 +137,17 @@ export class CursorManager {
     updateCursor(teamName, x, y) {
         // Проверяем, существует ли уже курсор для этой команды
         let cursor = this.cursors[teamName];
-        
+
         if (!cursor) {
             // Создаем новый курсор
             cursor = this._createCursor(teamName);
             this.cursors[teamName] = cursor;
         }
-        
+
         // Обновляем позицию курсора
         cursor.style.transform = `translate(${x}px, ${y}px)`;
     }
-    
+
     /**
      * Создание курсора
      * @param {string} teamName - Имя команды
@@ -166,7 +166,7 @@ export class CursorManager {
         cursor.style.transition = 'transform 0.1s ease-out';
         cursor.style.zIndex = '9999';
         cursor.style.pointerEvents = 'none';
-        
+
         // Добавляем имя команды
         const nameTag = document.createElement('div');
         nameTag.className = 'cursor-name-tag';
@@ -180,28 +180,43 @@ export class CursorManager {
         nameTag.style.borderRadius = '3px';
         nameTag.style.fontSize = '12px';
         nameTag.style.whiteSpace = 'nowrap';
-        
+
         cursor.appendChild(nameTag);
-        
+
         // Добавляем курсор в контейнер
         this.cursorContainer.appendChild(cursor);
-        
+
         return cursor;
     }
-    
+
     /**
      * Удаление курсора
      * @param {string} teamName - Имя команды
      */
     removeCursor(teamName) {
         const cursor = this.cursors[teamName];
-        
+
         if (cursor) {
             cursor.remove();
             delete this.cursors[teamName];
         }
     }
-    
+
+    /**
+     * Удаление всех курсоров
+     */
+    removeAllCursors() {
+        // Перебираем все курсоры и удаляем их
+        Object.keys(this.cursors).forEach(teamName => {
+            this.removeCursor(teamName);
+        });
+
+        // Очищаем объект курсоров
+        this.cursors = {};
+
+        console.log('Все курсоры удалены');
+    }
+
     /**
      * Получение случайного цвета на основе имени команды
      * @param {string} teamName - Имя команды
@@ -214,16 +229,16 @@ export class CursorManager {
         for (let i = 0; i < teamName.length; i++) {
             hash = teamName.charCodeAt(i) + ((hash << 5) - hash);
         }
-        
+
         let color = '#';
         for (let i = 0; i < 3; i++) {
             const value = (hash >> (i * 8)) & 0xFF;
             color += ('00' + value.toString(16)).substr(-2);
         }
-        
+
         return color;
     }
-    
+
     /**
      * Функция для ограничения частоты вызовов
      * @param {Function} func - Функция для тротлинга

@@ -146,6 +146,11 @@
     </div>
   </div>
 
+  <!-- Кнопка выхода -->
+  <button id="logout-btn" class="logout-btn" aria-label="Выход">
+    <i class="fas fa-sign-out-alt"></i> Выход
+  </button>
+
   <!-- Основной контейнер (изначально отображаем) -->
   <div id="main-content" class="container" role="main" aria-label="Редактор кода">
     <div class="left">
@@ -189,8 +194,10 @@
   <div id="login-modal" class="login-modal" style="display: flex;">
     <div class="login-content">
       <h2>Добро пожаловать!</h2>
+      <p>Выберите режим работы:</p>
       <div class="login-buttons">
-        <button id="login-btn" class="login-btn">Вход</button>
+        <button id="collaborative-mode-btn" class="login-btn">Совместный режим</button>
+        <button id="solo-mode-btn" class="login-btn solo-mode-btn">Одиночный режим</button>
       </div>
     </div>
   </div>

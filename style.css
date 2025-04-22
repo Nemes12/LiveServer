@@ -433,6 +433,89 @@ label {
     z-index: 11000;
 }
 
+.login-content {
+    background: rgba(45, 45, 45, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+}
+
+.login-content h2 {
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.login-content p {
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-btn {
+    background: var(--button-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #a881f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.solo-mode-btn {
+    background: #50fa7b;
+}
+
+.solo-mode-btn:hover {
+    background: #3ad66a;
+}
+
+/* Стили для кнопки выхода */
+.logout-btn {
+    display: none; /* Изначально скрыта */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #ff5555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    align-items: center;
+    gap: 8px;
+    z-index: 9000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #ff3333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.logout-btn i {
+    font-size: 16px;
+}
+
 /* Стили для кнопки и панели доступности */
 .accessibility-btn {
     position: fixed;

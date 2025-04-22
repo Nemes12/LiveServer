@@ -412,6 +412,20 @@ export class SocketService {
     }
 
     /**
+     * Отключение от сервера
+     */
+    disconnect() {
+        if (this.socket && this.socket.connected) {
+            this.socket.disconnect();
+            log('Отключение от сервера');
+        }
+
+        // Сбрасываем данные авторизации
+        this.teamName = '';
+        this.teamData = null;
+    }
+
+    /**
      * Проверка авторизации
      * @return {boolean} - Авторизован ли пользователь
      */

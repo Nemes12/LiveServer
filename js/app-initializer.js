@@ -71,12 +71,12 @@ export class AppInitializer {
             // Инициализация менеджера курсоров
             this.cursorManager = new CursorManager(this.socketService);
 
-            // Инициализация модального окна авторизации
-            this.authModal = new AuthModal(this.socketService);
-
             // Инициализация менеджера редакторов кода
             this.codeEditorManager = new CodeEditorManager(this.socketService);
             this.codeEditorManager.initCodeEditors();
+
+            // Инициализация модального окна авторизации
+            this.authModal = new AuthModal(this.socketService, this.codeEditorManager, this.cursorManager);
 
             // Инициализация фрейма предпросмотра
             this._initPreviewFrame();
@@ -253,10 +253,25 @@ export class AppInitializer {
             loginFormModal.style.display = 'none';
         }
 
-        // Показываем счетчик пользователей
+        // Показываем основной контейнер
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            mainContent.style.display = 'flex';
+        }
+
+        // Проверяем режим работы
+        const isSoloMode = localStorage.getItem('workMode') === 'solo';
+
+        // Показываем счетчик пользователей только в совместном режиме
         const onlineUsersContainer = document.querySelector('.online-users');
         if (onlineUsersContainer) {
-            onlineUsersContainer.style.display = 'block';
+            onlineUsersContainer.style.display = isSoloMode ? 'none' : 'block';
+        }
+
+        // Показываем кнопку выхода
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.style.display = 'flex';
         }
 
         console.log('Основной контейнер показан после успешной авторизации');
